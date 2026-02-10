@@ -155,6 +155,18 @@ Optionally:
 
 ---
 
+## Platform support
+
+gokit-scaffold is a pure Go CLI and works on Linux, macOS, and Windows.
+
+Behavior is consistent across platforms. Minor differences may exist due to
+filesystem semantics (path separators, permissions), but generated output and
+runtime behavior are the same. Instructions here are based on Linux as default.
+
+A standard Go toolchain must be installed and available on PATH.
+
+---
+
 ## Install
 
 Install from source:
@@ -168,6 +180,31 @@ Or run directly from the repository:
 ```bash
 go run ./cmd/gokit-scaffold --help
 ```
+
+---
+
+## Uninstall
+
+`gokit-scaffold` installs as a single binary.
+
+If you installed it using `go install`, the binary lives in:
+
+$GOPATH/bin
+
+To remove it, simply delete the binary:
+
+rm $(go env GOPATH)/bin/gokit-scaffold
+
+Or, if your GOPATH is the default:
+
+rm ~/go/bin/gokit-scaffold
+
+No other files are created:
+- no system-wide installs
+- no config files
+- no background processes
+
+Removal is clean and complete.
 
 ---
 
