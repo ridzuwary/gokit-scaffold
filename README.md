@@ -141,6 +141,14 @@ A typical flow looks like this:
    - no required updates  
    - no regeneration  
 
+gokit-scaffold new
+        |
+        v
+  Generated Go service
+        |
+        v
+   Your real code
+
 Optionally:
 - use gokit-scaffold validate as a guardrail
 - use gokit-scaffold print for documentation and inspection
