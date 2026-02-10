@@ -1,0 +1,10 @@
+{
+  "tool": "gokit-scaffold",
+  "version": "0.1.0",
+  "template_pack": "service-http",
+  "spec": {
+    "name": "hello-api",
+    "module": "github.com/example/hello-api",
+    "http_port": 8080
+  }
+}

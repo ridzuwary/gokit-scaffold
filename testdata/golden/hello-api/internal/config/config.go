@@ -10,7 +10,7 @@ type Config struct {
 	HTTPPort int
 }
 
-const defaultHTTPPort = {{ .HTTPPort }}
+const defaultHTTPPort = 8080
 
 func Load() (Config, error) {
 	port := defaultHTTPPort

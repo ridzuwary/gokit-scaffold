@@ -9,9 +9,9 @@ import (
 	"syscall"
 	"time"
 
-	"{{ .Module }}/internal/config"
-	"{{ .Module }}/internal/httpserver"
-	"{{ .Module }}/internal/logging"
+	"github.com/example/hello-api/internal/config"
+	"github.com/example/hello-api/internal/httpserver"
+	"github.com/example/hello-api/internal/logging"
 )
 
 func main() {

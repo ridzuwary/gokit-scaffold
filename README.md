@@ -22,8 +22,16 @@ go run ./cmd/gokit-scaffold new \
   --dir ./tmp/hello-api
 ```
 
-Planned marker validation command:
+Validate an existing scaffold:
 
 ```bash
 go run ./cmd/gokit-scaffold validate --dir ./hello-api
+```
+
+## Troubleshooting
+
+If `go test` fails with a Go build cache permission error in restricted environments, run with:
+
+```bash
+GOCACHE=/tmp/go-build go test ./...
 ```

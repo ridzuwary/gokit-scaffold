@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/ridzuwary/gokit-scaffold/internal/generator"
 	"github.com/ridzuwary/gokit-scaffold/internal/spec"
@@ -94,7 +95,16 @@ func runValidate(args []string) int {
 		return 2
 	}
 
-	ui.PrintInfo(fmt.Sprintf("validate is planned to check %s marker in %s", spec.MarkerFileName, *dir))
+	errs := spec.ValidateScaffoldDir(*dir)
+	if len(errs) > 0 {
+		ui.PrintError(fmt.Errorf("validation failed for %s", *dir))
+		for _, err := range errs {
+			fmt.Fprintf(os.Stderr, "  - %s\n", strings.TrimSpace(err.Error()))
+		}
+		return 1
+	}
+
+	ui.PrintInfo(fmt.Sprintf("scaffold is valid: %s", *dir))
 	return 0
 }
 
