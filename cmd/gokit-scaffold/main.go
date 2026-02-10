@@ -115,7 +115,43 @@ func runPrint(args []string) int {
 		return 2
 	}
 
-	ui.PrintInfo("template-pack: service-http")
-	ui.PrintInfo("files: go.mod, cmd/server/main.go, internal/config/config.go, internal/logging/logging.go, internal/httpserver/server.go, internal/httpserver/health.go, README.md, .gokit-scaffold")
+	out, err := formatPrintOutput(ToolName, ToolVersion)
+	if err != nil {
+		ui.PrintError(err)
+		return 1
+	}
+
+	fmt.Fprintln(os.Stdout, out)
 	return 0
+}
+
+func formatPrintOutput(toolName, toolVersion string) (string, error) {
+	packs := generator.TemplatePacks()
+	tree, err := generator.OutputTree(generator.ServiceHTTPTemplatePack)
+	if err != nil {
+		return "", err
+	}
+
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("%s %s\n\n", toolName, toolVersion))
+	b.WriteString("Template Packs\n")
+	for _, pack := range packs {
+		b.WriteString("- ")
+		b.WriteString(pack)
+		b.WriteString("\n")
+	}
+
+	b.WriteString("\nGenerated Outputs Tree (service-http)\n")
+	b.WriteString(tree)
+	b.WriteString("\n\nMarker Schema Summary\n")
+	b.WriteString("- `tool`: scaffold generator identifier (`gokit-scaffold`)\n")
+	b.WriteString("- `version`: tool version used to generate the scaffold\n")
+	b.WriteString("- `template_pack`: template pack name (`service-http`)\n")
+	b.WriteString("- `spec.name`: service name (`^[a-z][a-z0-9-]*$`)\n")
+	b.WriteString("- `spec.module`: Go module path\n")
+	b.WriteString("- `spec.http_port`: HTTP listen port (1-65535)\n")
+	b.WriteString("\nExample new command\n")
+	b.WriteString("gokit-scaffold new --name hello-api --module github.com/acme/hello-api --http-port 8080\n")
+
+	return strings.TrimRight(b.String(), "\n"), nil
 }

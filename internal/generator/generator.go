@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sort"
 	"text/template"
 
 	"github.com/ridzuwary/gokit-scaffold/internal/spec"
@@ -21,11 +20,6 @@ type templateData struct {
 	Version  string
 }
 
-type renderEntry struct {
-	templatePath string
-	outputPath   string
-}
-
 func Generate(s spec.ProjectSpec, version string) error {
 	data := templateData{
 		Name:     s.Name,
@@ -34,20 +28,10 @@ func Generate(s spec.ProjectSpec, version string) error {
 		Version:  version,
 	}
 
-	entries := []renderEntry{
-		{templatePath: "service-http/.gokit-scaffold.tmpl", outputPath: ".gokit-scaffold"},
-		{templatePath: "service-http/README.md.tmpl", outputPath: "README.md"},
-		{templatePath: "service-http/cmd/server/main.go.tmpl", outputPath: "cmd/server/main.go"},
-		{templatePath: "service-http/go.mod.tmpl", outputPath: "go.mod"},
-		{templatePath: "service-http/internal/config/config.go.tmpl", outputPath: "internal/config/config.go"},
-		{templatePath: "service-http/internal/httpserver/health.go.tmpl", outputPath: "internal/httpserver/health.go"},
-		{templatePath: "service-http/internal/httpserver/server.go.tmpl", outputPath: "internal/httpserver/server.go"},
-		{templatePath: "service-http/internal/logging/logging.go.tmpl", outputPath: "internal/logging/logging.go"},
+	entries, err := Manifest(ServiceHTTPTemplatePack)
+	if err != nil {
+		return err
 	}
-
-	sort.Slice(entries, func(i, j int) bool {
-		return entries[i].outputPath < entries[j].outputPath
-	})
 
 	for _, entry := range entries {
 		if err := renderToFile(s.Dir, entry, data); err != nil {
@@ -58,23 +42,23 @@ func Generate(s spec.ProjectSpec, version string) error {
 	return nil
 }
 
-func renderToFile(baseDir string, entry renderEntry, data templateData) error {
-	body, err := templates.FS.ReadFile(entry.templatePath)
+func renderToFile(baseDir string, entry ManifestEntry, data templateData) error {
+	body, err := templates.FS.ReadFile(entry.TemplatePath)
 	if err != nil {
-		return fmt.Errorf("read template %s: %w", entry.templatePath, err)
+		return fmt.Errorf("read template %s: %w", entry.TemplatePath, err)
 	}
 
-	tpl, err := template.New(entry.templatePath).Parse(string(body))
+	tpl, err := template.New(entry.TemplatePath).Parse(string(body))
 	if err != nil {
-		return fmt.Errorf("parse template %s: %w", entry.templatePath, err)
+		return fmt.Errorf("parse template %s: %w", entry.TemplatePath, err)
 	}
 
 	var out bytes.Buffer
 	if err := tpl.Execute(&out, data); err != nil {
-		return fmt.Errorf("render template %s: %w", entry.templatePath, err)
+		return fmt.Errorf("render template %s: %w", entry.TemplatePath, err)
 	}
 
-	target := filepath.Join(baseDir, filepath.Clean(entry.outputPath))
+	target := filepath.Join(baseDir, filepath.Clean(entry.OutputPath))
 	if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
 		return fmt.Errorf("create output directory for %s: %w", target, err)
 	}
