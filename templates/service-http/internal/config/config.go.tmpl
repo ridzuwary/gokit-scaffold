@@ -1,0 +1,23 @@
+package config
+
+import (
+	"os"
+	"strconv"
+)
+
+type Config struct {
+	HTTPPort int
+}
+
+const defaultHTTPPort = {{ .HTTPPort }}
+
+func Load() Config {
+	port := defaultHTTPPort
+	if rawPort := os.Getenv("HTTP_PORT"); rawPort != "" {
+		if parsedPort, err := strconv.Atoi(rawPort); err == nil && parsedPort > 0 && parsedPort <= 65535 {
+			port = parsedPort
+		}
+	}
+
+	return Config{HTTPPort: port}
+}

@@ -106,6 +106,6 @@ func runPrint(args []string) int {
 	}
 
 	ui.PrintInfo("template-pack: service-http")
-	ui.PrintInfo("files: go.mod, cmd/server/main.go, README.md, .gokit-scaffold")
+	ui.PrintInfo("files: go.mod, cmd/server/main.go, internal/config/config.go, internal/logging/logging.go, internal/httpserver/server.go, internal/httpserver/health.go, README.md, .gokit-scaffold")
 	return 0
 }

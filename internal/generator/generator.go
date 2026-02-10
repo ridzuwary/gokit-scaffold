@@ -39,6 +39,10 @@ func Generate(s spec.ProjectSpec, version string) error {
 		{templatePath: "service-http/README.md.tmpl", outputPath: "README.md"},
 		{templatePath: "service-http/cmd/server/main.go.tmpl", outputPath: "cmd/server/main.go"},
 		{templatePath: "service-http/go.mod.tmpl", outputPath: "go.mod"},
+		{templatePath: "service-http/internal/config/config.go.tmpl", outputPath: "internal/config/config.go"},
+		{templatePath: "service-http/internal/httpserver/health.go.tmpl", outputPath: "internal/httpserver/health.go"},
+		{templatePath: "service-http/internal/httpserver/server.go.tmpl", outputPath: "internal/httpserver/server.go"},
+		{templatePath: "service-http/internal/logging/logging.go.tmpl", outputPath: "internal/logging/logging.go"},
 	}
 
 	sort.Slice(entries, func(i, j int) bool {
