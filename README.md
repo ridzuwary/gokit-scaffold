@@ -1,5 +1,9 @@
 # gokit-scaffold
 
+> Generate a clean, runnable Go HTTP service scaffold with boring, explicit defaults.
+> 
+> One command. No frameworks. No runtime dependencies. Safe by default.
+
 `gokit-scaffold` is a **local-first Go scaffold generator** for building small, production-ready HTTP services with **boring, explicit defaults**.
 
 It exists to solve one specific problem:
