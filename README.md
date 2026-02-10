@@ -240,11 +240,15 @@ Golden snapshots live under testdata/golden/hello-api and are enforced by TestGe
 
 Only update goldens when template output intentionally changes:
 
+```bash
 UPDATE_GOLDEN=1 go test ./internal/generator -run TestGenerateGoldenHelloAPI
+```
 
 Then run full tests before committing:
 
+```bash
 go test ./...
+```
 
 ---
 
@@ -256,4 +260,6 @@ Ensure Go is on the system PATH, not just your shell config.
 ### Go build cache permission errors
 In restricted environments:
 
+```bash
 GOCACHE=/tmp/go-build go test ./...
+```
